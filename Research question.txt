@@ -1,0 +1,8 @@
+From the separate dataset and the interlacing dataset, the following sub research questions should be done.
+
+0. To validate the consistency of the dataset, we need firstly investigate on the performance difference of one element on single chip.
+1. What is the performance difference between different chips? (Research on one element on different chips)
+2. Could different elements be identified using the spectrum information?
+3. How to recognize certain area with two metals interlacing with each other instead of another element?
+4. What is an efficient way to calibrate raw value to value comparable with theoretical value?
+5. What the characteristics of data on the edge between chips?
