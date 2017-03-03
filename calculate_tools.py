@@ -10,6 +10,9 @@ from sklearn.metrics import mean_squared_error
 import operator
 import os
 import dxchange
+
+from xraydb import XrayDB
+
 #%matplotlib notebook
 
 
@@ -176,8 +179,6 @@ def choose_region(formating_input):
 
     return coords
 
-
-
 #Average of all the energy bin
 def show_average_and_variance((x1, y1), (x2, y2), formating_input, data_se, data_in, Energy_Value):
     result_spectrum_mean = []
@@ -208,3 +209,6 @@ def show_average_and_variance((x1, y1), (x2, y2), formating_input, data_se, data
     plt.title('Spectrum variance between for the region from' +str((x1, y1))+' to '+str((x2, y2)))
     plt.plot(Energy_Value, result_variance)
     return result_spectrum_mean, result_variance
+
+def theoretical_spectrum(element, Energy_Value):
+    return XrayDB().mu_elam(element, Energy_Value)
