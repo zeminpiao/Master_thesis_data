@@ -10,6 +10,8 @@ from sklearn.metrics import mean_squared_error
 import operator
 import os
 import dxchange
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 
 from xraydb import XrayDB
 
@@ -85,41 +87,43 @@ def show_spectrum(x, y, formating, data_se, data_in, Energy_Value):
     #plt.title('spectrum of point ('+str(x)+', '+str(y)+')')
     plt.plot(Energy_Value, mc_coefficient, linewidth=0.1)
     #plt.show()
+    return spectrum_test
 
 
 def show_spectrum_region((x1, y1), (x2, y2), formating_input, data_se, data_in, Energy_Value):
+    spectrum_region = []
     plt.figure()
     plt.title('spectrum figure for region from '+str((x1, y1))+' to '+str((x2, y2)))
     if x1 > x2:
         for i in range(x2, x1):
             if y1 > y2:
                 for j in range(y2, y1):
-                    show_spectrum(i, j, formating_input, data_se, data_in, Energy_Value)
+                    spectrum_region.append(show_spectrum(i, j, formating_input, data_se, data_in, Energy_Value))
             elif y1 == y2:
-                show_spectrum(i, y1, formating_input, data_se, data_in, Energy_Value)
+                spectrum_region.append(show_spectrum(i, y1, formating_input, data_se, data_in, Energy_Value))
             elif y1 < y2:
                 for j in range(y1, y2):
-                    show_spectrum(i, j, formating_input, data_se, data_in, Energy_Value)
+                    spectrum_region.append(show_spectrum(i, j, formating_input, data_se, data_in, Energy_Value))
     elif x1 == x2:
         for j in range(y1, y2):
             if y1 > y2:
                 for j in range(y2, y1):
-                    show_spectrum(x1, j, formating_input, data_se, data_in, Energy_Value)
+                    spectrum_region.append(show_spectrum(x1, j, formating_input, data_se, data_in, Energy_Value))
             elif y1 == y2:
-                show_spectrum(x1, y1, formating_input, data_se, data_in, Energy_Value)
+                spectrum_region.append(show_spectrum(x1, y1, formating_input, data_se, data_in, Energy_Value))
             elif y1 < y2:
                 for j in range(y1, y2):
-                    show_spectrum(x1, j, formating_input, data_se, data_in, Energy_Value)
+                    spectrum_region.append(show_spectrum(x1, j, formating_input, data_se, data_in, Energy_Value))
     elif x1 < x2:
         for i in range(x1, x2):
             if y1 > y2:
                 for j in range(y2, y1):
-                    show_spectrum(i, j, formating_input, data_se, data_in, Energy_Value)
+                    spectrum_region.append(show_spectrum(i, j, formating_input, data_se, data_in, Energy_Value))
             elif y1 == y2:
-                show_spectrum(i, y1, formating_input, data_se, data_in, Energy_Value)
+                spectrum_region.append(show_spectrum(i, y1, formating_input, data_se, data_in, Energy_Value))
             elif y1 < y2:
                 for j in range(y1, y2):
-                    show_spectrum(i, j, formating_input, data_se, data_in, Energy_Value)
+                    spectrum_region.append(show_spectrum(i, j, formating_input, data_se, data_in, Energy_Value))
     #plt.show(1)
     
     #plt.figure(2)
@@ -141,6 +145,8 @@ def show_spectrum_region((x1, y1), (x2, y2), formating_input, data_se, data_in, 
     else:
         raise NameError('Wrong dataset name')
     coords = []
+    
+    return spectrum_region
 
 def choose_region(formating_input):
     global coords
@@ -212,3 +218,25 @@ def show_average_and_variance((x1, y1), (x2, y2), formating_input, data_se, data
 
 def theoretical_spectrum(element, Energy_Value):
     return XrayDB().mu_elam(element, Energy_Value)
+
+
+#find the optimal k for kmeans clustering:
+def find_optimal_k_by_PCA(input_data):
+    
+    test_PCA_data = numpy.array(input_data)
+    test_PCA_data = numpy.nan_to_num(test_PCA_data)
+    #print test_PCA_data.shape
+    PCA_data = PCA()
+
+    #plt.figure()
+
+    a = PCA()
+    e = a.fit(test_PCA_data)
+    ratio_sum = 0
+    for i in range(0, 100):
+        ratio_sum = ratio_sum + e.explained_variance_ratio_[i]
+        if ratio_sum >0.99:
+            break
+    return i+1
+    
+
