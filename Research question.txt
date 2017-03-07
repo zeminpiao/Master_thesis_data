@@ -3,6 +3,13 @@ From the separate dataset and the interlacing dataset, the following sub researc
 0. To validate the consistency of the dataset, we need firstly investigate on the performance difference of one element on single chip.
 1. What is the performance difference between different chips? (Research on one element on different chips)
 2. Could different elements be identified using the spectrum information?
-3. How to recognize certain area with two metals interlacing with each other instead of another element?
+   1. Using clustering algorithms to identify different bunch of spectral data
+   (Euclidean distance may not be trustable)
+   2. Calculate the average of different clusters, then do the calibration
+   3. Compare to theoretical spectrum
+3. How to recognize certain area with two metals interlacing with each other instead of one another element?
 4. What is an efficient way to calibrate raw value to value comparable with theoretical value?
+   1. Measuring the thickness, calculate the mass density
+   2. Using average of real spectrum and theoretical spectrum to calculate the constant
+   3. Choose one value in one energy bin, use the division from the theoretical value in that energy bin over the chosen value, as the constant. (Which is bad in performance)
 5. What the characteristics of data on the edge between chips?
