@@ -68,6 +68,17 @@ def data_initialization(data_se, data_in):
     
     return data_se, data_in, data_se_mf, data_se_in
 
+def clean_nan(data_input):
+    index_nan = numpy.argwhere(numpy.isnan(data_input))
+    for index in index_nan:
+        a = index[0]
+        b = index[1]+1
+        if a >= 516:
+            a = 515
+        elif b >= 516:
+            b = 515
+        
+        data_input[index[0],index[1],index[2]] = data_input[a,b,index[2]]
 
 
 #Showing the spectrum of one specific pixel
@@ -169,9 +180,9 @@ def choose_region(formating_input):
         return
 
     if formating_input == 'separate':
-        im_origin = Image.open('/ufs/piao/Desktop/Data_2.24/after_ob_correction/92_3_separate_after_ob.tif')
+        im_origin = Image.open('/ufs/piao/Desktop/Data_2.24/separate.tif')
     elif formating_input == 'interlacing':
-        im_origin = Image.open('/ufs/piao/Desktop/Data_2.24/after_ob_correction/92_3_interlacing_after_ob.tif')
+        im_origin = Image.open('/ufs/piao/Desktop/Data_2.24/interlacing.tif')
     else:
         raise NameError('Wrong dataset name')
     origin_array = numpy.array(im_origin)
